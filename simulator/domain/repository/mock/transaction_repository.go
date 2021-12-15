@@ -33,16 +33,16 @@ func (m *MockTransactionRepository) EXPECT() *MockTransactionRepositoryMockRecor
 	return m.recorder
 }
 
-// insert mocks base method.
-func (m *MockTransactionRepository) insert(id, accountId string, amount float64, status, errorMessage string) error {
+// Insert mocks base method.
+func (m *MockTransactionRepository) Insert(id, accountId string, amount float64, status, errorMessage string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "insert", id, accountId, amount, status, errorMessage)
+	ret := m.ctrl.Call(m, "Insert", id, accountId, amount, status, errorMessage)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// insert indicates an expected call of insert.
-func (mr *MockTransactionRepositoryMockRecorder) insert(id, accountId, amount, status, errorMessage interface{}) *gomock.Call {
+// Insert indicates an expected call of Insert.
+func (mr *MockTransactionRepositoryMockRecorder) Insert(id, accountId, amount, status, errorMessage interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "insert", reflect.TypeOf((*MockTransactionRepository)(nil).insert), id, accountId, amount, status, errorMessage)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockTransactionRepository)(nil).Insert), id, accountId, amount, status, errorMessage)
 }
