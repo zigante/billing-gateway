@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { join } from 'path';
 
 import { AccountsModule } from './accounts/accounts.module';
 import { Account } from './accounts/entities/account.entity';
@@ -11,13 +11,18 @@ import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     OrdersModule,
     AccountsModule,
     SequelizeModule.forRoot({
-      dialect: 'sqlite',
-      host: join(__dirname, 'database.sqlite'),
       autoLoadModels: true,
+      database: process.env.DB_DATABASE,
+      dialect: process.env.DB_CONNECTION as any,
+      host: process.env.DB_HOST,
       models: [Order, Account],
+      password: process.env.DB_PASSWORD,
+      port: +process.env.DB_PORT,
+      username: process.env.DB_USERNAME,
       sync: { alter: true },
     }),
   ],

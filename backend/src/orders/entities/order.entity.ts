@@ -1,6 +1,6 @@
 import { BelongsTo, Column, DataType, ForeignKey, Model, PrimaryKey, Table } from 'sequelize-typescript';
 
-import { Account } from '../accounts/entities/account.entity';
+import { Account } from '../../accounts/entities/account.entity';
 
 export enum OrderStatus {
   PENDING = 'pending',
@@ -14,10 +14,10 @@ export enum OrderStatus {
 })
 export class Order extends Model {
   @PrimaryKey
-  @Column({ type: DataType.UUIDV4, defaultValue: DataType.UUIDV4, field: 'ID' })
+  @Column({ type: DataType.UUID, defaultValue: DataType.UUIDV4, field: 'ID' })
   id: string;
 
-  @Column({ type: DataType.DECIMAL, allowNull: false, field: 'AMOUNT' })
+  @Column({ type: DataType.DECIMAL(10, 2), allowNull: false, field: 'AMOUNT' })
   amount: number;
 
   @Column({ allowNull: false, field: 'CREDIT_CARD_NUMBER' })
@@ -30,7 +30,7 @@ export class Order extends Model {
   status: OrderStatus;
 
   @ForeignKey(() => Account)
-  @Column({ type: DataType.UUID, allowNull: false })
+  @Column({ type: DataType.UUID, allowNull: false, field: 'ACCOUNT_ID' })
   accountId: string;
 
   @BelongsTo(() => Account)

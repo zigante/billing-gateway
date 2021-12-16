@@ -27,10 +27,7 @@ export class OrdersService {
   }
 
   findOne(id: string) {
-    return this.orderModule.findOne({
-      where: {
-        [Op.or]: { id, accountId: this.accountStorageService.account.id },
-      },
+    return this.orderModule.findByPk(id, {
       rejectOnEmpty: new EmptyResultError(`Account with Id ${id} not found`),
     });
   }
