@@ -1,4 +1,6 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+import { KafkaMessage } from '@nestjs/microservices/external/kafka.interface';
 
 import { TokenGuard } from '../accounts/token.guard';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -34,5 +36,12 @@ export class OrdersController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.ordersService.remove(id);
+  }
+
+  @MessagePattern('transactions_result')
+  consumerUpdateStatus(@Payload() message: KafkaMessage) {
+    const { id, status } = message.value as any;
+
+    return this.ordersService.update(id, { status });
   }
 }
