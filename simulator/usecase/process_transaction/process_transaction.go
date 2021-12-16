@@ -1,16 +1,19 @@
 package process_transaction
 
 import (
+	"github.com/zigante/billing-gateway/adapter/broker"
 	"github.com/zigante/billing-gateway/domain/entity"
 	"github.com/zigante/billing-gateway/domain/repository"
 )
 
 type ProcessTransaction struct {
 	Repository repository.TransactionRepository
+	Producer   broker.ProducerInterface
+	Topic      string
 }
 
-func NewProcessTransaction(repository repository.TransactionRepository) *ProcessTransaction {
-	return &ProcessTransaction{Repository: repository}
+func NewProcessTransaction(repository repository.TransactionRepository, producer broker.ProducerInterface, topic string) *ProcessTransaction {
+	return &ProcessTransaction{Repository: repository, Producer: producer, Topic: topic}
 }
 
 func (processTransaction *ProcessTransaction) Execute(input TransactionDtoInput) (TransactionDtoOutput, error) {
@@ -43,6 +46,11 @@ func (processTransaction *ProcessTransaction) rejectTransaction(transaction *ent
 		ErrorMessage: invalidTransaction.Error(),
 	}
 
+	err = processTransaction.publish(output, []byte(transaction.Id))
+	if err != nil {
+		panic(err)
+	}
+
 	return output, nil
 }
 
@@ -57,5 +65,19 @@ func (processTransaction *ProcessTransaction) approveTransaction(input Transacti
 		ErrorMessage: "",
 	}
 
+	err = processTransaction.publish(output, []byte(transaction.Id))
+	if err != nil {
+		panic(err)
+	}
+
 	return output, nil
+}
+
+func (processTransaction *ProcessTransaction) publish(output TransactionDtoOutput, key []byte) error {
+	err := processTransaction.Producer.Publish(output, key, processTransaction.Topic)
+	if err != nil {
+		panic(err)
+	}
+
+	return nil
 }
