@@ -12,18 +12,18 @@ export enum OrderStatus {
 })
 export class Order extends Model {
   @PrimaryKey
-  @Column({ type: DataType.UUIDV4, defaultValue: DataType.UUIDV4 })
+  @Column({ type: DataType.UUIDV4, defaultValue: DataType.UUIDV4, field: 'ID' })
   id: string;
 
-  @Column({ type: DataType.DECIMAL, allowNull: false })
+  @Column({ type: DataType.DECIMAL, allowNull: false, field: 'AMOUNT' })
   amount: number;
 
-  @Column({ allowNull: false })
+  @Column({ allowNull: false, field: 'CREDIT_CARD_NUMBER' })
   creditCardNumber: string;
 
-  @Column({ allowNull: false })
+  @Column({ allowNull: false, field: 'CREDIT_CARD_NAME' })
   creditCardName: string;
 
-  @Column({ allowNull: false, defaultValue: OrderStatus.PENDING })
+  @Column({ allowNull: false, defaultValue: OrderStatus.PENDING, field: 'STATUS' })
   status: OrderStatus;
 }
