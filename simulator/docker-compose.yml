@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  simulator:
+  app:
     container_name: simulator
     build: .
     volumes:
