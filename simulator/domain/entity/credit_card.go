@@ -32,19 +32,19 @@ func NewCreditCard(number string, name string, expirationMonth int, expirationYe
 }
 
 func (creditCard *CreditCard) IsValid() error {
-	err := creditCard.ValidateNumber()
+	err := creditCard.validateNumber()
 
 	if err != nil {
 		return err
 	}
 
-	err = creditCard.ValidateMonth()
+	err = creditCard.validateMonth()
 
 	if err != nil {
 		return err
 	}
 
-	err = creditCard.ValidateYear()
+	err = creditCard.validateYear()
 
 	if err != nil {
 		return err
@@ -53,7 +53,7 @@ func (creditCard *CreditCard) IsValid() error {
 	return nil
 }
 
-func (creditCard *CreditCard) ValidateNumber() error {
+func (creditCard *CreditCard) validateNumber() error {
 	regex := regexp.MustCompile(`^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$`)
 
 	if !regex.MatchString(creditCard.Number) {
@@ -63,7 +63,7 @@ func (creditCard *CreditCard) ValidateNumber() error {
 	return nil
 }
 
-func (creditCard *CreditCard) ValidateMonth() error {
+func (creditCard *CreditCard) validateMonth() error {
 	if creditCard.ExpirationMonth > 0 && creditCard.ExpirationMonth < 13 {
 		return nil
 	}
@@ -71,7 +71,7 @@ func (creditCard *CreditCard) ValidateMonth() error {
 	return errors.New("invalid expiration month")
 }
 
-func (creditCard *CreditCard) ValidateYear() error {
+func (creditCard *CreditCard) validateYear() error {
 	if creditCard.ExpirationYear >= time.Now().Year() {
 		return nil
 	}
