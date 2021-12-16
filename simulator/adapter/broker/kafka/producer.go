@@ -10,7 +10,7 @@ type Producer struct {
 	Presenter presenter.Presenter
 }
 
-func NewkafkaProducer(configMap *ckafka.ConfigMap, presenter presenter.Presenter) *Producer {
+func NewProducer(configMap *ckafka.ConfigMap, presenter presenter.Presenter) *Producer {
 	return &Producer{
 		ConfigMap: configMap,
 		Presenter: presenter,

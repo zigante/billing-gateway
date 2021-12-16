@@ -18,7 +18,7 @@ func TestProducerPublish(t *testing.T) {
 	}
 
 	configMap := ckafka.ConfigMap{"test.mock.num.brokers": 3}
-	producer := NewkafkaProducer(&configMap, transaction.NewTransactionKafkaPresenter())
+	producer := NewProducer(&configMap, transaction.NewTransactionKafkaPresenter())
 
 	err := producer.Publish(expectedOutput, []byte("1"), "test")
 
